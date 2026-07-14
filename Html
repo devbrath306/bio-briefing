@@ -338,6 +338,24 @@
   </div>
 </div>
 
+<div class="overlay" id="passcode-overlay">
+  <div class="modal admin-modal" style="max-width:380px;">
+    <div class="tab" style="background:var(--c-editing);"></div>
+    <div class="body">
+      <button class="modal-close" id="passcode-close" aria-label="Close">×</button>
+      <div class="eyebrow" style="margin-bottom:8px;">Handler tools</div>
+      <h2 style="margin-top:4px; font-size:21px;">Enter passcode</h2>
+      <div class="admin-form" style="margin-top:14px;">
+        <label>Passcode
+          <input type="password" id="pc-input" placeholder="••••••••">
+        </label>
+        <button id="pc-submit" class="generate-btn">Unlock</button>
+        <span id="pc-error" style="font-size:12px; color:var(--c-funding); display:none;">Incorrect passcode. Try again.</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="overlay" id="admin-overlay">
   <div class="modal admin-modal">
     <div class="tab" style="background:var(--c-editing);"></div>
@@ -771,9 +789,34 @@ document.getElementById("nav-genomics").addEventListener("click", (e) => {
 });
 
 /* ---------- Admin: Add Update panel ---------- */
+const ADMIN_PASSCODE = "Manojroy@123"; // change this any time to reset who can use the panel
+
 document.getElementById("nav-admin").addEventListener("click", (e) => {
   e.preventDefault();
-  document.getElementById("admin-overlay").classList.add("open");
+  document.getElementById("pc-input").value = "";
+  document.getElementById("pc-error").style.display = "none";
+  document.getElementById("passcode-overlay").classList.add("open");
+  setTimeout(() => document.getElementById("pc-input").focus(), 50);
+});
+
+function tryUnlock(){
+  const entered = document.getElementById("pc-input").value;
+  if(entered === ADMIN_PASSCODE){
+    document.getElementById("passcode-overlay").classList.remove("open");
+    document.getElementById("admin-overlay").classList.add("open");
+  } else {
+    document.getElementById("pc-error").style.display = "inline";
+  }
+}
+document.getElementById("pc-submit").addEventListener("click", tryUnlock);
+document.getElementById("pc-input").addEventListener("keydown", (e) => {
+  if(e.key === "Enter") tryUnlock();
+});
+document.getElementById("passcode-close").addEventListener("click", () => {
+  document.getElementById("passcode-overlay").classList.remove("open");
+});
+document.getElementById("passcode-overlay").addEventListener("click", (e) => {
+  if(e.target.id === "passcode-overlay") document.getElementById("passcode-overlay").classList.remove("open");
 });
 document.getElementById("admin-close").addEventListener("click", () => {
   document.getElementById("admin-overlay").classList.remove("open");
@@ -798,9 +841,11 @@ document.getElementById("af-generate").addEventListener("click", () => {
   const featured = document.getElementById("af-featured").checked;
 
   if(!title || !date || !excerpt || contentLines.length === 0){
-    alert("Please fill in at least: Title, Date, Excerpt, and Full write-up.");
+    document.getElementById("af-copy-status").style.color = "var(--c-funding)";
+    document.getElementById("af-copy-status").textContent = "Please fill in at least Title, Date, Excerpt, and Full write-up.";
     return;
   }
+  document.getElementById("af-copy-status").style.color = "var(--c-editing)";
 
   let code = `  {\n`;
   code += `    title: "${jsEscape(title)}",\n`;
