@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BioBriefing — Student Biotechnology Updates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F1F3EE;
+    --paper-raised: #FBFCF9;
+    --ink: #1B2A22;
+    --ink-soft: #4A5B50;
+    --line: #C9CDBE;
+    --line-strong: #9AA491;
+
+    --c-genomics: #2B5B84;
+    --c-genomics-bg: #E3EBF1;
+    --c-editing: #2F6F4E;
+    --c-editing-bg: #E1EDE5;
+    --c-vaccines: #A9791E;
+    --c-vaccines-bg: #F1E9D3;
+    --c-bioinfo: #5B4B8A;
+    --c-bioinfo-bg: #E9E4F2;
+    --c-careers: #1F7A6C;
+    --c-careers-bg: #DFEFEA;
+    --c-funding: #8A3B3B;
+    --c-funding-bg: #F1DEDE;
+
+    --radius: 3px;
+    --shadow: 0 1px 0 rgba(27,42,34,0.06), 0 6px 16px -8px rgba(27,42,34,0.18);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'IBM Plex Sans', sans-serif;
+    line-height:1.5;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size: 34px 34px;
+    background-position: -1px -1px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+
+  a{color:inherit;}
+
+  /* ---------- HEADER ---------- */
+  header.site{
+    position:sticky; top:0; z-index:40;
+    background:rgba(241,243,238,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line-strong);
+  }
+  .site-bar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 24px;
+    max-width:1080px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .brand-mark{
+    width:30px; height:30px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, #4A8A63, var(--c-editing) 60%, #1B4632 100%);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.15);
+    flex-shrink:0;
+  }
+  .brand-text{
+    font-family:'Fraunces', serif; font-weight:600; font-size:19px; letter-spacing:-0.01em;
+  }
+  .site-nav{display:flex; gap:22px; font-family:'IBM Plex Mono', monospace; font-size:12.5px; letter-spacing:0.04em; text-transform:uppercase;}
+  .site-nav a{text-decoration:none; color:var(--ink-soft); border-bottom:1px solid transparent; padding-bottom:3px;}
+  .site-nav a:hover{color:var(--ink); border-bottom-color:var(--ink);}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:56px 24px 40px;}
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--ink-soft);
+    display:flex; align-items:center; gap:10px;
+    margin-bottom:18px;
+  }
+  .eyebrow::before{
+    content:''; width:7px; height:7px; background:var(--c-editing); border-radius:50%;
+    box-shadow:0 0 0 3px var(--c-editing-bg);
+  }
+  h1.headline{
+    font-family:'Fraunces', serif; font-weight:600; font-size:56px; line-height:1.02;
+    margin:0 0 18px; max-width:11ch; letter-spacing:-0.015em;
+  }
+  .sub{font-size:18px; color:var(--ink-soft); max-width:52ch; margin:0 0 30px;}
+
+  .hero-meta{display:flex; gap:28px; flex-wrap:wrap; font-family:'IBM Plex Mono', monospace; font-size:13px; color:var(--ink-soft);}
+  .hero-meta strong{color:var(--ink); font-weight:600;}
+
+  /* ---------- FEATURED SPECIMEN CARD ---------- */
+  .featured{
+    margin-top:38px;
+    background:var(--paper-raised);
+    border:1px solid var(--line-strong);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    display:grid;
+    grid-template-columns:14px 1fr;
+    overflow:hidden;
+  }
+  .featured .tab{background:var(--tab-color, var(--c-editing));}
+  .featured .body{padding:28px 30px 30px;}
+  .featured-label{
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.1em; text-transform:uppercase;
+    color:var(--ink-soft); display:flex; gap:14px; align-items:center; margin-bottom:14px;
+  }
+  .pin{color:var(--c-funding); font-weight:600;}
+  .featured h2{font-family:'Fraunces', serif; font-size:28px; font-weight:600; margin:0 0 10px; letter-spacing:-0.01em;}
+  .featured p.excerpt{color:var(--ink-soft); font-size:15.5px; max-width:65ch; margin:0 0 18px;}
+  .read-link{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:0.06em;
+    text-decoration:none; border-bottom:1px solid var(--ink); padding-bottom:2px; cursor:pointer;
+  }
+
+  /* ---------- FILTER BAR ---------- */
+  .filter-bar{
+    padding:30px 24px 18px;
+    display:flex; flex-wrap:wrap; gap:10px; align-items:center;
+    border-top:1px solid var(--line);
+    margin-top:10px;
+  }
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:12px; letter-spacing:0.04em; text-transform:uppercase;
+    padding:7px 13px; border-radius:20px; border:1px solid var(--line-strong);
+    background:var(--paper-raised); color:var(--ink-soft); cursor:pointer;
+    transition:background .15s, color .15s, border-color .15s;
+  }
+  .chip:hover{border-color:var(--ink-soft);}
+  .chip.active{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .search-wrap{margin-left:auto; position:relative; min-width:220px;}
+  #search{
+    width:100%;
+    font-family:'IBM Plex Sans', sans-serif; font-size:14px;
+    padding:9px 14px 9px 34px;
+    border:1px solid var(--line-strong); border-radius:20px;
+    background:var(--paper-raised); color:var(--ink);
+  }
+  #search:focus{outline:2px solid var(--c-editing); outline-offset:1px;}
+  .search-wrap::before{
+    content:'⌕'; position:absolute; left:13px; top:50%; transform:translateY(-50%);
+    color:var(--ink-soft); font-size:15px;
+  }
+
+  /* ---------- GRID ---------- */
+  .grid{
+    padding:26px 24px 80px;
+    display:grid; grid-template-columns:repeat(2, 1fr); gap:18px;
+  }
+  @media (max-width:720px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper-raised);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    display:grid; grid-template-columns:10px 1fr;
+    box-shadow:0 1px 0 rgba(27,42,34,0.04);
+    cursor:pointer;
+    opacity:0; transform:translateY(10px);
+    animation:rise .5s ease forwards;
+  }
+  .card:hover{border-color:var(--line-strong);}
+  .card .tab{background:var(--tab-color);}
+  .card .body{padding:18px 20px 20px;}
+  .card-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; gap:10px;}
+  .tag{
+    font-family:'IBM Plex Mono', monospace; font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
+    padding:3px 9px; border-radius:12px;
+    background:var(--tab-bg); color:var(--tab-color); font-weight:600;
+  }
+  .date{font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft); white-space:nowrap;}
+  .card h3{font-family:'Fraunces', serif; font-size:19px; font-weight:600; margin:0 0 8px; letter-spacing:-0.005em;}
+  .card p{font-size:14px; color:var(--ink-soft); margin:0 0 12px;}
+  .keywords{display:flex; gap:6px; flex-wrap:wrap;}
+  .kw{font-size:11px; font-family:'IBM Plex Mono', monospace; color:var(--ink-soft);}
+  .kw::before{content:'#';}
+
+  @keyframes rise{ to{opacity:1; transform:none;} }
+
+  .empty-state{
+    padding:60px 24px; text-align:center; color:var(--ink-soft);
+    font-family:'IBM Plex Mono', monospace; font-size:13px;
+  }
+
+  /* ---------- MODAL ---------- */
+  .overlay{
+    position:fixed; inset:0; background:rgba(20,28,22,0.55);
+    display:none; align-items:flex-start; justify-content:center;
+    padding:60px 20px; overflow-y:auto; z-index:100;
+  }
+  .overlay.open{display:flex;}
+  .modal{
+    background:var(--paper-raised); max-width:640px; width:100%;
+    border-radius:var(--radius); box-shadow:0 20px 50px -10px rgba(0,0,0,0.4);
+    display:grid; grid-template-columns:14px 1fr;
+    animation:pop .25s ease;
+  }
+  @keyframes pop{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:none;} }
+  .modal .tab{background:var(--tab-color);}
+  .modal .body{padding:34px 34px 38px; position:relative;}
+  .modal-close{
+    position:absolute; top:20px; right:22px; background:none; border:none;
+    font-size:22px; color:var(--ink-soft); cursor:pointer; line-height:1;
+  }
+  .modal-close:hover{color:var(--ink);}
+  .modal h2{font-family:'Fraunces', serif; font-size:26px; margin:14px 0 12px; padding-right:20px;}
+  .modal .meta-row{display:flex; gap:14px; align-items:center; margin-bottom:6px;}
+  .modal-content{font-size:15px; color:var(--ink); line-height:1.7; margin-top:16px;}
+  .modal-content p{margin:0 0 14px;}
+  .modal-source{margin-top:22px; padding-top:16px; border-top:1px solid var(--line); font-family:'IBM Plex Mono', monospace; font-size:12px; color:var(--ink-soft);}
+
+  /* ---------- FOOTER ---------- */
+  footer{
+    border-top:1px solid var(--line-strong);
+    padding:38px 24px 46px;
+    font-size:13.5px; color:var(--ink-soft);
+  }
+  footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px;}
+  footer .foot-brand{font-family:'IBM Plex Mono', monospace; letter-spacing:0.05em; text-transform:uppercase; font-size:11.5px;}
+  footer a{text-decoration:none; border-bottom:1px solid var(--line-strong);}
+  footer a:hover{border-bottom-color:var(--ink);}
+  .legal-row{
+    margin-top:30px; padding-top:18px; border-top:1px solid var(--line);
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--ink-soft);
+  }
+  .legal-links{display:flex; gap:16px; flex-wrap:wrap;}
+  .legal-links a{color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.04em;}
+
+  :focus-visible{outline:2px solid var(--c-editing); outline-offset:2px;}
+
+  /* ---------- ADMIN PANEL ---------- */
+  .admin-modal{max-width:620px;}
+  .admin-form{display:flex; flex-direction:column; gap:16px; margin-top:10px;}
+  .admin-form label{
+    display:flex; flex-direction:column; gap:6px;
+    font-family:'IBM Plex Mono', monospace; font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .admin-form input[type="text"], .admin-form select, .admin-form textarea{
+    font-family:'IBM Plex Sans', sans-serif; font-size:14px; text-transform:none; letter-spacing:normal;
+    color:var(--ink); padding:9px 12px; border:1px solid var(--line-strong); border-radius:var(--radius);
+    background:var(--paper); resize:vertical;
+  }
+  .admin-form input:focus, .admin-form select:focus, .admin-form textarea:focus{
+    outline:2px solid var(--c-editing); outline-offset:1px;
+  }
+  .checkbox-row{flex-direction:row !important; align-items:flex-start; gap:8px !important; text-transform:none; letter-spacing:normal; font-size:13px;}
+  .checkbox-row input{margin-top:2px;}
+  .generate-btn{
+    font-family:'IBM Plex Mono', monospace; font-size:12.5px; text-transform:uppercase; letter-spacing:0.06em;
+    background:var(--ink); color:var(--paper); border:none; border-radius:20px;
+    padding:11px 20px; cursor:pointer; align-self:flex-start;
+  }
+  .generate-btn:hover{background:var(--c-editing);}
+  .generate-btn.secondary{background:var(--paper-raised); color:var(--ink); border:1px solid var(--line-strong);}
+  .generate-btn.secondary:hover{background:var(--paper);}
+  #af-output{font-family:'IBM Plex Mono', monospace; font-size:12px; background:#22301F0D;}
+
+  @media (max-width:600px){
+    h1.headline{font-size:38px;}
+    .site-nav{display:none;}
+    .search-wrap{margin-left:0; width:100%;}
+    .filter-bar{gap:8px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="site-bar">
+    <div class="brand">
+      <div class="brand-mark"></div>
+      <div class="brand-text">BioBriefing</div>
+    </div>
+    <nav class="site-nav">
+      <a href="#updates">Latest</a>
+      <a href="#" id="nav-genomics">Categories</a>
+      <a href="#about">About</a>
+      <a href="#" id="nav-admin" style="color:var(--c-editing);">+ Add Update</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero wrap">
+  <div class="eyebrow">Student Edition · Updated Weekly</div>
+  <h1 class="headline">Biotechnology, tracked for the classroom.</h1>
+  <p class="sub">A running notebook of biotechnology developments — gene editing, vaccines, bioinformatics, funding and careers — written so students can actually use them, not just skim them.</p>
+  <div class="hero-meta">
+    <span><strong id="stat-count">0</strong> entries logged</span>
+    <span><strong id="stat-cats">6</strong> categories tracked</span>
+    <span>Curated by <strong>your instructor</strong></span>
+  </div>
+
+  <div class="featured" id="featured-card">
+    <!-- filled by JS -->
+  </div>
+</section>
+
+<div class="filter-bar wrap" id="updates">
+  <button class="chip active" data-filter="all">All</button>
+  <button class="chip" data-filter="genomics">Genomics</button>
+  <button class="chip" data-filter="editing">Gene Editing</button>
+  <button class="chip" data-filter="vaccines">Vaccines</button>
+  <button class="chip" data-filter="bioinfo">Bioinformatics</button>
+  <button class="chip" data-filter="careers">Careers</button>
+  <button class="chip" data-filter="funding">Funding &amp; Policy</button>
+  <div class="search-wrap">
+    <input type="text" id="search" placeholder="Search updates…" aria-label="Search updates">
+  </div>
+</div>
+
+<div class="grid wrap" id="grid"></div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal-inner">
+    <div class="tab"></div>
+    <div class="body">
+      <button class="modal-close" id="modal-close" aria-label="Close">×</button>
+      <div id="modal-content"></div>
+    </div>
+  </div>
+</div>
+
+<div class="overlay" id="admin-overlay">
+  <div class="modal admin-modal">
+    <div class="tab" style="background:var(--c-editing);"></div>
+    <div class="body">
+      <button class="modal-close" id="admin-close" aria-label="Close">×</button>
+      <div class="eyebrow" style="margin-bottom:8px;">Handler tools</div>
+      <h2 style="margin-top:4px;">Add a New Update</h2>
+      <p style="color:var(--ink-soft); font-size:14px; margin:0 0 20px;">
+        Fill this in, click <strong>Generate code</strong>, then copy the result into the
+        <code>UPDATES</code> array in <code>index.html</code> (either on your computer, or
+        directly in GitHub's editor). This box does not publish anything by itself —
+        it just writes correctly-formatted code for you.
+      </p>
+
+      <div class="admin-form">
+        <label>Title
+          <input type="text" id="af-title" placeholder="e.g. New CRISPR delivery method shows promise">
+        </label>
+
+        <label>Category
+          <select id="af-category">
+            <option value="genomics">Genomics</option>
+            <option value="editing">Gene Editing</option>
+            <option value="vaccines">Vaccines</option>
+            <option value="bioinfo">Bioinformatics</option>
+            <option value="careers">Careers</option>
+            <option value="funding">Funding & Policy</option>
+          </select>
+        </label>
+
+        <label>Date
+          <input type="text" id="af-date" placeholder="e.g. Jul 20, 2026">
+        </label>
+
+        <label>Excerpt (1–2 sentences, shown on the card)
+          <textarea id="af-excerpt" rows="2" placeholder="Short summary for the card view"></textarea>
+        </label>
+
+        <label>Full write-up (one paragraph per line)
+          <textarea id="af-content" rows="5" placeholder="Paragraph one.&#10;Paragraph two.&#10;Paragraph three."></textarea>
+        </label>
+
+        <label>Tags (comma separated)
+          <input type="text" id="af-tags" placeholder="e.g. crispr, delivery, vectors">
+        </label>
+
+        <label>Source (optional)
+          <input type="text" id="af-source" placeholder="e.g. Nature Biotechnology">
+        </label>
+
+        <label>Link (optional)
+          <input type="text" id="af-link" placeholder="https://...">
+        </label>
+
+        <label class="checkbox-row">
+          <input type="checkbox" id="af-featured">
+          Show this in the featured hero slot (only one update should have this checked)
+        </label>
+
+        <button id="af-generate" class="generate-btn">Generate code →</button>
+
+        <div id="af-output-wrap" style="display:none;">
+          <label>Copy this into the <code>UPDATES</code> array
+            <textarea id="af-output" rows="10" readonly></textarea>
+          </label>
+          <button id="af-copy" class="generate-btn secondary">Copy to clipboard</button>
+          <span id="af-copy-status" style="font-size:12px; color:var(--c-editing); margin-left:10px;"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer id="about">
+  <div class="wrap">
+    <div>
+      <div class="foot-brand">BioBriefing</div>
+      <div style="margin-top:8px; max-width:40ch;">A shared board for biotechnology updates, kept in one place so students don't have to hunt across ten different feeds before class.</div>
+      <div style="margin-top:16px; font-family:'IBM Plex Mono', monospace; font-size:12px;">
+        Handled by <strong>Dev Bharat</strong><br>
+        <a href="mailto:manojroy9864@gmail.com">manojroy9864@gmail.com</a> · +91 98013 50162
+      </div>
+    </div>
+    <div style="max-width:32ch;">
+      Spot something worth adding? Send it to your instructor to include in next week's log.
+    </div>
+  </div>
+  <div class="wrap legal-row">
+    <span>© 2026 BioBriefing. Run by Dev Bharat, Patna, Bihar, India.</span>
+    <span class="legal-links">
+      <a href="#" data-legal="privacy">Privacy Policy</a>
+      <a href="#" data-legal="terms">Terms of Use</a>
+      <a href="#" data-legal="disclaimer">Disclaimer</a>
+      <a href="#" data-legal="grievance">Grievance Contact</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+/* =========================================================================
+   ADD NEW UPDATES HERE.
+   Each entry is one object. Fields:
+     title      – headline of the update
+     category   – one of: genomics | editing | vaccines | bioinfo | careers | funding
+     date       – e.g. "Jul 10, 2026" (shown as-is, sort manually by placing
+                  newest entries first in the array)
+     excerpt    – 1–2 sentence summary shown on the card
+     content    – full write-up shown when the card is clicked. Use an array
+                  of strings; each string becomes its own paragraph.
+     tags       – array of short keywords shown on the card
+     source     – (optional) name of the original source, shown in the modal
+     link       – (optional) URL students can open to read the original piece
+     featured   – set true on exactly ONE entry to show it in the hero slot
+   ========================================================================= */
+const UPDATES = [
+  {
+    title: "CRISPR base editing, explained without the jargon",
+    category: "editing",
+    date: "Jul 10, 2026",
+    excerpt: "Base editors change a single DNA letter without cutting both strands of the helix — a gentler alternative to classic CRISPR-Cas9. Here's the mechanism, in plain terms.",
+    content: [
+      "Classic CRISPR-Cas9 works by cutting both strands of DNA and letting the cell's own repair machinery patch the break — a process that is powerful but occasionally messy.",
+      "Base editors take a different approach. They fuse a Cas9 variant that no longer cuts DNA cleanly to an enzyme that chemically converts one nucleotide into another, letter by letter, without ever breaking the double helix.",
+      "For students: focus on the distinction between 'cutting' editors (Cas9, Cas12) and 'rewriting' editors (base editors, prime editors). Exam questions often hinge on which class of tool is appropriate for which type of mutation."
+    ],
+    tags: ["crispr", "base-editing", "molecular-biology"],
+    source: "Lecture supplement",
+    featured: true
+  },
+  {
+    title: "mRNA vaccine platforms are moving beyond infectious disease",
+    category: "vaccines",
+    date: "Jul 8, 2026",
+    excerpt: "The lipid-nanoparticle delivery system built for COVID-19 vaccines is now the backbone of trials in oncology and rare disease. What changed, and why it matters for immunology students.",
+    content: [
+      "The core insight behind mRNA vaccines is that the body can be handed a temporary instruction set — a strand of messenger RNA — and asked to manufacture a specific protein itself, rather than being injected with the protein directly.",
+      "That same delivery mechanism, a lipid nanoparticle that protects fragile RNA long enough to reach a cell, is now being adapted for personalized cancer vaccines that teach the immune system to recognize tumor-specific markers.",
+      "Worth reviewing: the difference between prophylactic vaccines (preventing disease) and therapeutic vaccines (treating existing disease) — this distinction underpins most current mRNA trial design."
+    ],
+    tags: ["mrna", "immunology", "lipid-nanoparticles"],
+    source: "Journal club summary"
+  },
+  {
+    title: "Long-read sequencing is closing the gaps in the human genome",
+    category: "genomics",
+    date: "Jul 6, 2026",
+    excerpt: "Short-read sequencing struggles with repetitive DNA. Long-read platforms are filling in regions of the genome that were essentially unreadable a decade ago.",
+    content: [
+      "Older sequencing methods read DNA in short fragments, typically a few hundred base pairs, then reassemble them computationally — a process that breaks down in highly repetitive regions like centromeres.",
+      "Long-read technologies can sequence tens of thousands of bases in a single pass, making it possible to span repetitive stretches directly instead of piecing them together by inference.",
+      "For lab reports: if your assignment involves genome assembly, note which sequencing platform generated the reads before choosing an assembly algorithm — the two are not interchangeable."
+    ],
+    tags: ["sequencing", "genome-assembly", "genomics"],
+    source: "Course reading list"
+  },
+  {
+    title: "Where AI is actually earning its place in bioinformatics pipelines",
+    category: "bioinfo",
+    date: "Jul 4, 2026",
+    excerpt: "Protein structure prediction gets the headlines, but the quieter wins are in variant calling and image analysis. A grounded look at what's changed.",
+    content: [
+      "Structure-prediction tools now let researchers generate a plausible 3D protein model from sequence alone, cutting steps out of workflows that once depended entirely on slow, expensive crystallography.",
+      "Less visible but arguably more impactful: machine-learning models embedded in variant-calling software are reducing false positives when identifying mutations from raw sequencing data.",
+      "If you're building a bioinformatics portfolio, a small variant-calling or image-segmentation project demonstrates more practical skill than trying to replicate a headline structure-prediction result from scratch."
+    ],
+    tags: ["ai", "bioinformatics", "protein-structure"],
+    source: "Lab meeting notes"
+  },
+  {
+    title: "What biotech recruiters are actually screening for this cycle",
+    category: "careers",
+    date: "Jul 2, 2026",
+    excerpt: "Wet-lab skills still matter, but comfort with basic scripting and data hygiene is now a baseline expectation, not a bonus, for entry-level roles.",
+    content: [
+      "Across recent internship and entry-level postings, a working knowledge of Python or R for data cleaning shows up almost as often as specific lab techniques like PCR or cell culture.",
+      "Employers are less interested in advanced statistics and more interested in whether a candidate can document an experiment clearly enough for someone else to reproduce it.",
+      "Practical step: keep a clean, versioned lab notebook (digital or physical) for every project — it's one of the most commonly requested items in biotech interview portfolios."
+    ],
+    tags: ["careers", "internships", "skills"],
+    source: "Career services briefing"
+  },
+  {
+    title: "Grant funding is shifting toward translational biotech projects",
+    category: "funding",
+    date: "Jun 29, 2026",
+    excerpt: "Funding bodies are increasingly favoring research with a clear path from bench to application. Here's what that means if you're scoping a thesis project.",
+    content: [
+      "Reviewers are placing more weight on a project's plan for moving from laboratory results toward a real-world application, even at the earliest funding stages.",
+      "This doesn't mean pure basic research is unfundable — it means proposals benefit from at least one paragraph addressing why the work matters beyond the lab.",
+      "If you're drafting a thesis or grant proposal, ask your advisor for a funded proposal from the last funding cycle to use as a structural template."
+    ],
+    tags: ["funding", "grants", "policy"],
+    source: "Department funding update"
+  },
+  {
+    title: "Organoids are becoming a standard tool, not a novelty",
+    category: "genomics",
+    date: "Jun 26, 2026",
+    excerpt: "Lab-grown miniature organs are showing up in more undergraduate lab curricula. A quick primer on what they are and why they're spreading.",
+    content: [
+      "Organoids are small, self-organizing clusters of cells grown from stem cells that mimic some structure and function of a real organ, most commonly gut, brain, or liver tissue.",
+      "They sit in a useful middle ground between flat cell cultures, which are cheap but not very realistic, and animal models, which are realistic but slow and expensive.",
+      "If your program offers an organoid module, it's worth taking even outside a genomics track — the culture techniques transfer directly to general cell biology skills."
+    ],
+    tags: ["organoids", "stem-cells", "cell-culture"],
+    source: "Curriculum notes"
+  },
+  {
+    title: "A field guide to CRISPR delivery methods",
+    category: "editing",
+    date: "Jun 22, 2026",
+    excerpt: "Editing the DNA is only half the problem — getting the editing machinery into the right cells is the other half. Viral vectors, lipid particles, and electroporation compared.",
+    content: [
+      "Viral vectors, most commonly adeno-associated virus, are efficient at reaching cells but limited in how much genetic cargo they can carry.",
+      "Lipid nanoparticles avoid the cargo-size limit and immune concerns of viral vectors but currently work best for cells that are easy to reach, like liver cells.",
+      "Electroporation — using an electric pulse to temporarily open cell membranes — is common in lab settings and ex-vivo therapies but isn't practical for editing cells inside a living body.",
+      "For a methods exam: match the delivery method to the target tissue before worrying about the editing tool itself. Delivery is usually the harder engineering problem."
+    ],
+    tags: ["crispr", "delivery", "vectors"],
+    source: "Lecture supplement"
+  },
+  {
+    title: "Internship season: what a strong biotech application actually looks like",
+    category: "careers",
+    date: "Jun 18, 2026",
+    excerpt: "A short breakdown of the application details that tend to separate shortlisted candidates from the rest, based on this cycle's postings.",
+    content: [
+      "Application reviewers consistently mention that a one-line description of a specific technique performed independently outweighs a long list of coursework.",
+      "Cover letters that name the lab's actual current project, rather than a generic interest in 'biotech innovation,' are noticeably more likely to get a response.",
+      "If you have no formal lab experience yet, a documented independent project — even a small bioinformatics script or a home-lab experiment — is a reasonable substitute to mention."
+    ],
+    tags: ["careers", "applications", "internships"],
+    source: "Career services briefing"
+  }
+];
+
+/* =========================================================================
+   LEGAL PAGES — edit the text here if any detail about you changes
+   (name, contact, or how the site collects data).
+   ========================================================================= */
+const LEGAL_PAGES = {
+  privacy: {
+    title: "Privacy Policy",
+    updated: "Last updated: Jul 13, 2026",
+    body: [
+      "This site is run by Dev Bharat as an independent, non-commercial resource for students following biotechnology.",
+      "<strong>What is collected:</strong> This site does not require account creation, does not use tracking cookies, and does not collect personal data from visitors beyond what your browser sends automatically (such as approximate location via IP, for basic hosting logs, if hosted on a standard web host).",
+      "<strong>Fonts:</strong> This page loads typefaces from Google Fonts' servers. Loading a font this way can share your IP address and browser details with Google, under Google's own privacy policy. No other third-party service is used on this site.",
+      "<strong>Search box:</strong> Anything typed into the on-page search box stays in your browser only. It is never sent anywhere or stored.",
+      "<strong>Contact requests:</strong> If you email or call the contact listed on this site, that information (your name, email, message) is used only to respond to you and is not shared with any third party or used for marketing.",
+      "<strong>Your rights:</strong> Under India's Digital Personal Data Protection Act, 2023, you can ask what personal data (if any) is held about you, request correction, or request deletion, by contacting the grievance contact below.",
+      "<strong>Changes:</strong> This policy may be updated as the site changes. The 'last updated' date above will reflect the latest revision."
+    ]
+  },
+  terms: {
+    title: "Terms of Use",
+    updated: "Last updated: Jul 13, 2026",
+    body: [
+      "By using this site, you agree to the following terms. If you do not agree, please do not use the site.",
+      "<strong>Purpose:</strong> This site is provided free of charge as an educational resource for students. It is not a commercial product and offers no paid services.",
+      "<strong>Content ownership:</strong> Summaries and write-ups on this site are prepared by the site handler, Dev Bharat, unless a source is credited. Where an update links to or references third-party research, news, or publications, rights to that original material remain with its respective owner.",
+      "<strong>Acceptable use:</strong> You may read, share, and reference content from this site for personal or educational use with credit to the source. You may not scrape, republish in bulk, or use the content to build a competing commercial product without permission.",
+      "<strong>No warranty:</strong> The site is provided 'as is.' While reasonable care is taken to keep updates accurate, no guarantee is made that content is complete, current, or error-free at all times.",
+      "<strong>External links:</strong> Where updates link to outside sources, this site is not responsible for the content, accuracy, or privacy practices of those external sites.",
+      "<strong>Governing law:</strong> These terms are governed by the laws of India, and any disputes will fall under the jurisdiction of the courts at Patna, Bihar.",
+      "<strong>Changes to these terms:</strong> Terms may be revised as the site evolves. Continued use of the site after a change means you accept the revised terms."
+    ]
+  },
+  disclaimer: {
+    title: "Disclaimer",
+    updated: "Last updated: Jul 13, 2026",
+    body: [
+      "The content on BioBriefing is intended for general educational awareness for students studying biotechnology. It is a teaching aid, not a primary research source.",
+      "Summaries on this site simplify complex scientific topics. Simplification can involve leaving out nuance or caveats present in the original research. Always verify a specific fact or figure against the original paper, clinical trial registry, or official source before citing it in academic work.",
+      "This site does not provide medical, clinical, legal, financial, or professional advice of any kind. Nothing here should be treated as a substitute for guidance from a qualified professional, instructor, or institution.",
+      "Views expressed in any summary reflect the site handler's understanding at the time of writing and may not reflect the views of any institution, employer, or publication mentioned.",
+      "The site handler is not liable for decisions made, academic or otherwise, based solely on content from this site."
+    ]
+  },
+  grievance: {
+    title: "Grievance & Contact",
+    updated: "Response target: within 15 working days",
+    body: [
+      "This site is handled by an individual, as required for transparency under India's IT Rules, 2021.",
+      "<strong>Name:</strong> Dev Bharat",
+      "<strong>Role:</strong> Site Handler / Grievance Contact",
+      "<strong>Location:</strong> Patna, Bihar, India",
+      "<strong>Email:</strong> <a href=\"mailto:manojroy9864@gmail.com\">manojroy9864@gmail.com</a>",
+      "<strong>Phone:</strong> +91 98013 50162",
+      "Use this contact to report inaccurate content, request removal of a specific update, ask about data held about you, or raise any other concern about the site. Genuine requests will be acknowledged and addressed within a reasonable time."
+    ]
+  }
+};
+
+function openLegal(key){
+  const page = LEGAL_PAGES[key];
+  document.getElementById("modal-inner").style.setProperty("--tab-color", "var(--ink-soft)");
+  document.getElementById("modal-content").innerHTML = `
+    <div class="meta-row"><span class="date">${page.updated}</span></div>
+    <h2>${page.title}</h2>
+    <div class="modal-content">
+      ${page.body.map(p => `<p>${p}</p>`).join("")}
+    </div>
+  `;
+  document.getElementById("overlay").classList.add("open");
+}
+
+/* =========================================================================
+   Below this line is display logic — no need to edit unless you're
+   changing how the site behaves.
+   ========================================================================= */
+
+const CATEGORY_META = {
+  genomics:  { label: "Genomics",         color: "var(--c-genomics)",  bg: "var(--c-genomics-bg)" },
+  editing:   { label: "Gene Editing",     color: "var(--c-editing)",   bg: "var(--c-editing-bg)" },
+  vaccines:  { label: "Vaccines",         color: "var(--c-vaccines)",  bg: "var(--c-vaccines-bg)" },
+  bioinfo:   { label: "Bioinformatics",   color: "var(--c-bioinfo)",   bg: "var(--c-bioinfo-bg)" },
+  careers:   { label: "Careers",          color: "var(--c-careers)",  bg: "var(--c-careers-bg)" },
+  funding:   { label: "Funding & Policy", color: "var(--c-funding)",  bg: "var(--c-funding-bg)" },
+};
+
+let activeFilter = "all";
+let searchTerm = "";
+
+function renderFeatured(){
+  const item = UPDATES.find(u => u.featured) || UPDATES[0];
+  const meta = CATEGORY_META[item.category];
+  const el = document.getElementById("featured-card");
+  el.style.setProperty("--tab-color", meta.color);
+  el.innerHTML = `
+    <div class="tab"></div>
+    <div class="body">
+      <div class="featured-label">
+        <span class="pin">★ FEATURED</span>
+        <span>${meta.label}</span>
+        <span>·</span>
+        <span>${item.date}</span>
+      </div>
+      <h2>${item.title}</h2>
+      <p class="excerpt">${item.excerpt}</p>
+      <span class="read-link" data-open="${UPDATES.indexOf(item)}">Read full update →</span>
+    </div>`;
+}
+
+function matchesFilters(item){
+  const catOk = activeFilter === "all" || item.category === activeFilter;
+  const term = searchTerm.trim().toLowerCase();
+  const hay = (item.title + " " + item.excerpt + " " + item.tags.join(" ")).toLowerCase();
+  const searchOk = term === "" || hay.includes(term);
+  return catOk && searchOk;
+}
+
+function renderGrid(){
+  const grid = document.getElementById("grid");
+  const items = UPDATES.filter(matchesFilters);
+  document.getElementById("stat-count").textContent = UPDATES.length;
+
+  if(items.length === 0){
+    grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;">No updates match that search. Try a different term or category.</div>`;
+    return;
+  }
+
+  grid.innerHTML = items.map(item => {
+    const idx = UPDATES.indexOf(item);
+    const meta = CATEGORY_META[item.category];
+    return `
+      <div class="card" style="--tab-color:${meta.color}; --tab-bg:${meta.bg}; animation-delay:${Math.min(idx,8)*0.04}s" data-open="${idx}" tabindex="0" role="button" aria-label="Open update: ${item.title}">
+        <div class="tab"></div>
+        <div class="body">
+          <div class="card-top">
+            <span class="tag">${meta.label}</span>
+            <span class="date">${item.date}</span>
+          </div>
+          <h3>${item.title}</h3>
+          <p>${item.excerpt}</p>
+          <div class="keywords">${item.tags.map(t => `<span class="kw">${t}</span>`).join("")}</div>
+        </div>
+      </div>`;
+  }).join("");
+}
+
+function openModal(idx){
+  const item = UPDATES[idx];
+  const meta = CATEGORY_META[item.category];
+  document.getElementById("modal-inner").style.setProperty("--tab-color", meta.color);
+  document.getElementById("modal-content").innerHTML = `
+    <div class="meta-row">
+      <span class="tag">${meta.label}</span>
+      <span class="date">${item.date}</span>
+    </div>
+    <h2>${item.title}</h2>
+    <div class="modal-content">
+      ${item.content.map(p => `<p>${p}</p>`).join("")}
+    </div>
+    ${item.source ? `<div class="modal-source">Source: ${item.source}${item.link ? ` · <a href="${item.link}" target="_blank" rel="noopener">Open original ↗</a>` : ""}</div>` : ""}
+  `;
+  document.getElementById("overlay").classList.add("open");
+}
+
+function closeModal(){
+  document.getElementById("overlay").classList.remove("open");
+}
+
+document.addEventListener("click", (e) => {
+  const opener = e.target.closest("[data-open]");
+  if(opener){ openModal(Number(opener.dataset.open)); return; }
+  const legalLink = e.target.closest("[data-legal]");
+  if(legalLink){ e.preventDefault(); openLegal(legalLink.dataset.legal); return; }
+  if(e.target.id === "overlay"){ closeModal(); }
+  if(e.target.id === "modal-close"){ closeModal(); }
+});
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+document.querySelectorAll(".chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    document.querySelectorAll(".chip").forEach(c => c.classList.remove("active"));
+    chip.classList.add("active");
+    activeFilter = chip.dataset.filter;
+    renderGrid();
+  });
+});
+
+document.getElementById("search").addEventListener("input", (e) => {
+  searchTerm = e.target.value;
+  renderGrid();
+});
+
+document.getElementById("nav-genomics").addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("updates").scrollIntoView({behavior:"smooth"});
+});
+
+/* ---------- Admin: Add Update panel ---------- */
+document.getElementById("nav-admin").addEventListener("click", (e) => {
+  e.preventDefault();
+  document.getElementById("admin-overlay").classList.add("open");
+});
+document.getElementById("admin-close").addEventListener("click", () => {
+  document.getElementById("admin-overlay").classList.remove("open");
+});
+document.getElementById("admin-overlay").addEventListener("click", (e) => {
+  if(e.target.id === "admin-overlay") document.getElementById("admin-overlay").classList.remove("open");
+});
+
+function jsEscape(str){
+  return String(str).replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+}
+
+document.getElementById("af-generate").addEventListener("click", () => {
+  const title = document.getElementById("af-title").value.trim();
+  const category = document.getElementById("af-category").value;
+  const date = document.getElementById("af-date").value.trim();
+  const excerpt = document.getElementById("af-excerpt").value.trim();
+  const contentLines = document.getElementById("af-content").value.split("\n").map(l => l.trim()).filter(Boolean);
+  const tags = document.getElementById("af-tags").value.split(",").map(t => t.trim()).filter(Boolean);
+  const source = document.getElementById("af-source").value.trim();
+  const link = document.getElementById("af-link").value.trim();
+  const featured = document.getElementById("af-featured").checked;
+
+  if(!title || !date || !excerpt || contentLines.length === 0){
+    alert("Please fill in at least: Title, Date, Excerpt, and Full write-up.");
+    return;
+  }
+
+  let code = `  {\n`;
+  code += `    title: "${jsEscape(title)}",\n`;
+  code += `    category: "${category}",\n`;
+  code += `    date: "${jsEscape(date)}",\n`;
+  code += `    excerpt: "${jsEscape(excerpt)}",\n`;
+  code += `    content: [\n`;
+  code += contentLines.map(l => `      "${jsEscape(l)}"`).join(",\n");
+  code += `\n    ],\n`;
+  code += `    tags: [${tags.map(t => `"${jsEscape(t)}"`).join(", ")}],\n`;
+  if(source) code += `    source: "${jsEscape(source)}",\n`;
+  if(link) code += `    link: "${jsEscape(link)}",\n`;
+  if(featured) code += `    featured: true,\n`;
+  code = code.replace(/,\n$/, "\n");
+  code += `  },`;
+
+  document.getElementById("af-output").value = code;
+  document.getElementById("af-output-wrap").style.display = "block";
+  document.getElementById("af-copy-status").textContent = "";
+});
+
+document.getElementById("af-copy").addEventListener("click", () => {
+  const output = document.getElementById("af-output");
+  output.select();
+  navigator.clipboard.writeText(output.value).then(() => {
+    document.getElementById("af-copy-status").textContent = "Copied ✓";
+  }).catch(() => {
+    document.getElementById("af-copy-status").textContent = "Select the text above and copy manually.";
+  });
+});
+
+renderFeatured();
+renderGrid();
+</script>
+
+</body>
+</html>
